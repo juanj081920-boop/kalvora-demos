@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://juanj081920-boop.github.io/kalvora-demos/glamping/">
 <meta property="og:image" content="https://juanj081920-boop.github.io/kalvora-demos/glamping/fotos/portada-1600.webp">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" as="image" href="fotos/portada-800.webp" imagesrcset="fotos/portada-800.webp 800w, fotos/portada-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" href="fotos/portada-800.webp" imagesrcset="fotos/portada-800.webp 800w, fotos/portada-1200.webp 1200w, fotos/portada-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="fuentes/cormorant-garamond-latin-500-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fuentes/jost-latin-400-normal.woff2" crossorigin>
 <style>
@@ -373,9 +373,20 @@ dialog[open]::backdrop{animation:velo .3s ease}
 .demo-f .btn{width:100%}
 .demo-f .link{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:6px}
 
-/* Revelado al hacer scroll */
-.js .rv{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
-.js .rv.in{opacity:1;transform:none}
+/* Revelado al hacer scroll: solo en computador. En el celular todo se ve de una vez (sin zonas en blanco al bajar) */
+@media (hover:hover) and (pointer:fine){
+  .js .rv{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+  .js .rv.in{opacity:1;transform:none}
+}
+/* Celular: fotos quietas, sin capas 3D ni efecto flotante (ahorra memoria y evita parpadeos en iPhone) */
+@media (hover:none),(pointer:coarse){
+  .hero img,.float img{transform:none!important;will-change:auto}
+  .cards{perspective:none}
+  .card-hit{transform-style:flat;transform:none}
+  .card.lift .card-hit{transform:translateY(-8px) scale(1.02)}
+  .badge,.barra,.oferta,.cart-h,.cart-f,.f-pie,.x{backdrop-filter:none}
+  .barra,.oferta,.cart-h,.cart-f,.f-pie{background:var(--surface)}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .js .rv{opacity:1;transform:none;transition:none}
@@ -390,7 +401,7 @@ dialog[open]::backdrop{animation:velo .3s ease}
 <div class="demo-bar"><div class="wrap"><span><b>Demostración hecha por Kalvora</b> · Pruébala como si fueras un huésped: nada se cobra ni se reserva de verdad.</span><a href="#duenos">Soy dueño de un glamping →</a></div></div>
 
 <header class="hero">
-  <img src="fotos/portada-800.webp" srcset="fotos/portada-800.webp 800w, fotos/portada-1600.webp 1600w" sizes="100vw" width="1600" height="1073" alt="Domo blanco con deck de madera y fogata frente a las montañas con niebla" fetchpriority="high" data-hero>
+  <img src="fotos/portada-800.webp" srcset="fotos/portada-800.webp 800w, fotos/portada-1200.webp 1200w, fotos/portada-1600.webp 1600w" sizes="100vw" width="1600" height="1073" alt="Domo blanco con deck de madera y fogata frente a las montañas con niebla" fetchpriority="high" data-hero>
   <div class="wrap">
     <span class="eyebrow">Glamping · Marinilla, Oriente antioqueño</span>
     <h1 class="marca" aria-label="K Glamping Demo"><span class="k">K</span><em>Glamping</em><small>Demo</small></h1>
@@ -453,7 +464,7 @@ dialog[open]::backdrop{animation:velo .3s ease}
 <section id="llegar" style="padding-top:0">
   <div class="wrap two">
     <div class="place rv">
-      <div class="float" data-float=".05" style="--tono:#87826b"><img src="fotos/paisaje-800.webp" srcset="fotos/paisaje-800.webp 800w, fotos/paisaje-1600.webp 1600w" sizes="(min-width:900px) 50vw, 100vw" width="800" height="537" alt="Montañas verdes con niebla al amanecer en el Oriente antioqueño" loading="lazy" decoding="async"></div>
+      <div class="float" data-float=".05" style="--tono:#87826b"><img src="fotos/paisaje-800.webp" srcset="fotos/paisaje-800.webp 800w, fotos/paisaje-1200.webp 1200w, fotos/paisaje-1600.webp 1600w" sizes="(min-width:900px) 50vw, 100vw" width="800" height="537" alt="Montañas verdes con niebla al amanecer en el Oriente antioqueño" loading="lazy" decoding="async"></div>
       <span class="eyebrow">Cómo llegar</span>
       <h2 style="font-size:clamp(1.9rem,6vw,2.6rem);margin:10px 0 12px">En las montañas de Marinilla</h2>
       <p>Al confirmar tu reserva te enviamos por WhatsApp la ubicación exacta y las indicaciones para llegar en carro. El último tramo es destapado y apto para cualquier vehículo.</p>
@@ -652,7 +663,7 @@ if (S.ini && S.ini < hoyISO) { S.ini = null; S.fin = null; }
 const guardar = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
 
 /* ---------- Tarjetas ---------- */
-const imgTag = (id, sizes, alt, wh) => `<img src="fotos/${id}-800.webp" srcset="fotos/${id}-800.webp 800w, fotos/${id}-1600.webp 1600w" sizes="${sizes}" alt="${esc(alt)}" ${wh} loading="lazy" decoding="async">`;
+const imgTag = (id, sizes, alt, wh) => `<img src="fotos/${id}-800.webp" srcset="fotos/${id}-800.webp 800w, fotos/${id}-1200.webp 1200w, fotos/${id}-1600.webp 1600w" sizes="${sizes}" alt="${esc(alt)}" ${wh} loading="lazy" decoding="async">`;
 const promoBadge = '<span class="badge hot">-15 % domingo a jueves</span>';
 $('#cards').innerHTML = CONFIG.glampings.map((g) => `
   <article class="card rv" data-card="${g.id}">
@@ -684,7 +695,7 @@ function abrirFicha(id, plan) {
   const ya = S.lineas.find((l) => l.id === id);
   F = { id, plan: plan || (ya ? ya.plan : 'solo'), hues: ya ? ya.hues : Math.min(2, g.capacidad) };
   ficha.innerHTML = `
-    <div class="f-img" style="--tono:${g.tono}"><img src="fotos/${g.foto}-800.webp" srcset="fotos/${g.foto}-800.webp 800w, fotos/${g.foto}-1600.webp 1600w" sizes="(max-width:600px) 100vw, 560px" alt="${esc(g.nombre)}" decoding="async"><span class="badges">${g.etiquetas.map((t) => `<span class="badge">${esc(t)}</span>`).join('')}${promoBadge}</span>
+    <div class="f-img" style="--tono:${g.tono}"><img src="fotos/${g.foto}-800.webp" srcset="fotos/${g.foto}-800.webp 800w, fotos/${g.foto}-1200.webp 1200w, fotos/${g.foto}-1600.webp 1600w" sizes="(max-width:600px) 100vw, 560px" alt="${esc(g.nombre)}" decoding="async"><span class="badges">${g.etiquetas.map((t) => `<span class="badge">${esc(t)}</span>`).join('')}${promoBadge}</span>
       <button class="x" type="button" data-cerrar aria-label="Cerrar">✕</button></div>
     <div class="f-body">
       <div><span class="eyebrow">${esc(g.para)} · hasta ${g.capacidad} personas</span><h2 id="f-t" style="margin-top:8px">${esc(g.nombre)}</h2></div>
@@ -978,9 +989,10 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('.rv').forEach((el) => io.observe(el));
 } else document.querySelectorAll('.rv').forEach((el) => el.classList.add('in'));
 let pendiente = false;
+const tactil = matchMedia('(hover: none), (pointer: coarse)').matches;   /* celular: sin efecto flotante */
 function moverFotos() {
   pendiente = false;
-  if (quieto) return;
+  if (quieto || tactil) return;
   const vh = innerHeight;
   if (scrollY < vh * 1.2) heroImg.style.transform = `translate3d(0,${scrollY * 0.28}px,0) scale(1.06)`;
   for (const el of flotantes) {
