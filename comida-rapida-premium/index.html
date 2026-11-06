@@ -555,7 +555,7 @@ dialog[open]::backdrop{animation:velo .3s ease}
 .franja__txt{min-width:0;font-size:.9rem;font-weight:600;line-height:1.25}
 .franja__acc{flex:none;display:flex;gap:2px}
 .franja button,.franja__salir{min-height:40px;padding:0 8px;border:0;background:none;color:var(--acc);font-size:.86rem;font-weight:600;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;flex:none}
-.con-franja .cat{scroll-margin-top:122px}
+.con-franja .cat{scroll-margin-top:0}
 html:has(body.con-franja){scroll-padding-top:122px}
 
 /* Dentro del pedido */
@@ -574,6 +574,31 @@ html:has(body.con-franja){scroll-padding-top:122px}
 .mas-detalle summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--muted);font-size:.92rem;text-decoration:underline;text-underline-offset:3px}
 .mas-detalle__c{display:grid;gap:14px;padding-top:6px}
 #r-mas:has(#r-mas-t[hidden]) .mas-detalle__c{padding-top:0}
+
+/* =====================================================================
+   OPCIONALES POR CLIENTE: barra fija, "Para tu parada", zócalos
+   ===================================================================== */
+.barra-fija{position:fixed;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;justify-content:flex-end;gap:8px;pointer-events:none}
+.barra-fija>*{pointer-events:auto;min-height:58px;box-shadow:0 12px 30px -10px rgba(0,0,0,.45)}
+.barra-fija__principal{flex:1;font-size:1rem}
+.barra-fija__mapa{flex:none;width:104px;padding:0 8px;line-height:1.15;background:var(--panel);color:var(--txt);border-color:var(--line)}
+.con-fija .barra{left:16px;right:auto;transform:none;width:calc(100% - 32px - 112px);padding:0 10px 0 6px;gap:8px;animation:none;background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none}
+.con-fija .barra__ico{flex:none;width:42px;height:42px}
+.con-fija .barra__txt{flex:1 1 auto;min-width:0;font-size:.88rem;line-height:1.1;text-align:left;white-space:normal}
+.con-fija .barra__total{margin-left:auto;padding-inline:8px;font-size:.84rem;white-space:nowrap}
+@media (max-width:379px){.barra-fija__mapa{width:84px;font-size:.88rem}.con-fija .barra{width:calc(100% - 32px - 92px);padding-left:12px}.con-fija .barra__ico{display:none}.con-fija .barra__txt{flex:0 1 58px}.con-fija .barra__total{font-size:.78rem;padding-inline:6px}}
+@media (min-width:1000px){.barra-fija{display:none}}
+.bajada{margin-top:8px;max-width:40ch;color:var(--hero-muted);font-size:1rem}
+.parada{padding-top:22px}
+.parada__foto{width:100%;aspect-ratio:16/7;object-fit:cover;border-radius:var(--r-card);margin-bottom:14px}
+.parada h2{font:var(--h-weight) 1.6rem/1.1 var(--f-display);text-transform:var(--h-case);letter-spacing:var(--h-track)}
+.parada__sub{margin-top:4px;color:var(--muted);font-size:.88rem}
+.parada__lista{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.parada__lista li{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:var(--r-btn);background:var(--panel);font-size:.92rem}
+.parada__lista i{flex:none;display:grid;place-items:center;width:22px;height:22px;color:var(--acc)}
+.parada__lista svg{width:22px;height:22px}
+.hero.hero--zocalo .wrap{padding-bottom:82px}
+.hero--zocalo .hero__picado{top:auto;bottom:0;height:48px;background-size:168px 48px}
 
 /* fonts: https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&family=DM+Mono:wght@400;500&display=swap */
 /* =====================================================================
@@ -637,6 +662,12 @@ html:has(body.con-franja){scroll-padding-top:122px}
 <section class="promo" id="promo" hidden><div class="wrap" id="promo-wrap"></div></section>
 
 <section class="datos" aria-label="Información rápida"><div class="wrap" id="datos"></div></section>
+
+<section class="parada" id="parada" hidden aria-labelledby="parada-t"><div class="wrap">
+  <h2 id="parada-t"></h2>
+  <p class="parada__sub" id="parada-sub"></p>
+  <ul class="parada__lista" id="parada-lista"></ul>
+</div></section>
 
 <section class="reco" id="reco-sec" hidden aria-labelledby="reco-t"><div class="wrap" id="reco"></div></section>
 
@@ -706,6 +737,7 @@ html:has(body.con-franja){scroll-padding-top:122px}
 </main>
 
 <button type="button" class="barra" id="barra" hidden><span class="barra__ico" id="barra-ico" aria-hidden="true"><i class="barra__nivel"></i><b class="barra__n" id="barra-n"></b></span><span class="barra__txt" id="barra-txt"></span><span class="barra__total" id="barra-total"></span></button>
+<div class="barra-fija" id="barra-fija" hidden><button type="button" class="btn barra-fija__principal" id="bf-principal" data-camino></button><button type="button" class="btn btn--ghost barra-fija__mapa" id="bf-mapa" data-llegar>Cómo llegar</button></div>
 <div class="fondo" id="fondo" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -746,7 +778,7 @@ html:has(body.con-franja){scroll-padding-top:122px}
 <dialog id="camino" aria-labelledby="camino-t">
   <form class="dlg reserva" id="camino-form" novalidate>
     <div class="dlg__top"><h2 id="camino-t">Voy en camino</h2><button type="button" class="cart__x" data-cerrar-dlg aria-label="Cerrar">×</button></div>
-    <p class="reserva__sub">Avísale al negocio y te esperan. Pagas allá, como siempre.</p>
+    <p class="reserva__sub" id="camino-sub">Avísale al negocio y te esperan. Pagas allá, como siempre.</p>
     <div class="campo"><span class="campo__lbl" id="c-en-l">¿En cuánto llegas?</span><div class="tipos tipos--4" id="c-en" role="radiogroup" aria-labelledby="c-en-l"></div></div>
     <div class="campo" id="c-otra-campo" hidden><label for="c-otra">¿A qué hora?</label><select id="c-otra"></select></div>
     <p class="camino__hora" id="c-hora" aria-live="polite"></p>
@@ -772,7 +804,7 @@ html:has(body.con-franja){scroll-padding-top:122px}
       <a class="btn" id="l-maps" target="_blank" rel="noopener">Google Maps</a>
       <a class="btn" id="l-waze" target="_blank" rel="noopener">Waze</a>
     </div>
-    <p class="nota" id="l-nota" hidden>Demo: en tu menú, estos botones abren el mapa con la ubicación de tu negocio.</p>
+    <p class="nota" id="l-nota" hidden>En tu menú, este botón lleva a tu negocio.</p>
   </div>
 </dialog>
 
@@ -837,7 +869,7 @@ html:has(body.con-franja){scroll-padding-top:122px}
 <footer><div class="wrap" id="pie"></div></footer>
 
 <script>
-const CONFIG = {"tema":"smash","demo":true,"idDemo":"premium","kalvora":{"whatsapp":"573043041242","url":"https://kalvora.com.co"},"negocio":{"nombre":"Smash House","lema":"Smash burgers aplastadas a la plancha, crocantes por fuera y jugosas por dentro.","whatsapp":"573043041242","direccion":"Calle 49 # 50-12","ciudad":"Rionegro"},"horario":{"tz":"America/Bogota","todos":["07:00","23:30"],"dias":{"vie":["07:00","01:00"],"sab":["07:00","01:00"]}},"pedirFueraDeHorario":true,"domicilio":{"activo":true,"minimo":20000,"gratisDesde":70000,"zonas":[{"id":"centro","nombre":"Rionegro centro","costo":4000},{"id":"sap","nombre":"San Antonio de Pereira","costo":5000},{"id":"porvenir","nombre":"El Porvenir","costo":5000},{"id":"llano","nombre":"Llanogrande","costo":7000},{"id":"marinilla","nombre":"Marinilla","costo":9000,"minimo":40000}]},"recoger":true,"pagos":["Efectivo","Nequi","Tarjeta al recibir"],"carrito":{"icono":"burger"},"camino":{"activo":true,"referencia":""},"reservas":{"activo":true,"maxPersonas":10,"horaSugerida":"12:30","paso":30,"ultimaAntes":60,"anticipacion":30,"ocasiones":["Cumpleaños","Reunión de amigos","Celebración"],"sub":"El negocio te confirma por WhatsApp. Pagas allá, como siempre."},"mesas":{"total":12},"hero":{"arte":"hamburguesa","botones":{"principal":"Pedir ahora","secundario":{"texto":"Arma tu combo","categoria":"combos"}},"foto":"fotos/min/portada.webp"},"promo":{"texto":"Combo Smash doble: burger, papas y gaseosa.","detalle":"Te ahorras más de 5 mil","categoria":"combos","cta":"Ver combos"},"recomendados":{"titulo":"Las que más salen","subtitulo":"Pedido fijo de la casa","items":[{"id":"doble","etiqueta":"La reina de la casa","texto":"Dos carnes de 90 g aplastadas a la plancha, doble cheddar fundido, cebolla caramelizada y salsa de la casa en pan brioche."},{"id":"combo-smash","texto":"Smash doble + papas + gaseosa. El pedido de siempre."},{"id":"malteada","texto":"Vainilla, chocolate o arequipe, espesa de verdad."}]},"upsell":{"tras":["burgers"],"ofrecer":["papas","gaseosa"],"texto":"¿Le agregamos {producto}?"},"sugerencias":{"titulo":"¿Le agregas algo?","categorias":["acompanantes","bebidas","postres"],"max":3},"grupos":{"punto":{"titulo":"¿Cómo la quieres?","tipo":"varios","items":[{"id":"sin-cebolla","nombre":"Sin cebolla"},{"id":"sin-pepinillo","nombre":"Sin pepinillos"},{"id":"sin-salsa","nombre":"Salsa aparte"}]},"extras":{"titulo":"Ponle más","tipo":"varios","max":4,"items":[{"id":"carne","nombre":"Carne extra","precio":6000},{"id":"cheddar","nombre":"Cheddar extra","precio":3000},{"id":"tocineta","nombre":"Tocineta crocante","precio":4000},{"id":"jalapeno","nombre":"Jalapeños","precio":2000},{"id":"huevo","nombre":"Huevo frito","precio":2500}]},"burgerCombo":{"titulo":"Escoge tu burger","tipo":"uno","requerido":true,"items":[{"id":"clasica","nombre":"Smash clásica"},{"id":"doble","nombre":"Smash doble","precio":5000},{"id":"bacon","nombre":"Bacon smash","precio":8000},{"id":"pollo","nombre":"Crispy pollo","precio":3000}]},"acompCombo":{"titulo":"Escoge el acompañante","tipo":"uno","requerido":true,"items":[{"id":"papas","nombre":"Papas a la francesa"},{"id":"papasq","nombre":"Papas con queso y tocineta","precio":4000},{"id":"aros","nombre":"Aros de cebolla","precio":2000},{"id":"nuggets","nombre":"Nuggets x6","precio":3000}]},"bebidaCombo":{"titulo":"Escoge la bebida","tipo":"uno","requerido":true,"items":[{"id":"gaseosa","nombre":"Gaseosa 400 ml","defecto":true},{"id":"limonada","nombre":"Limonada natural"},{"id":"malteada","nombre":"Malteada","precio":7000}]},"sabor":{"titulo":"Sabor","tipo":"uno","requerido":true,"items":[{"id":"vainilla","nombre":"Vainilla","defecto":true},{"id":"chocolate","nombre":"Chocolate"},{"id":"arequipe","nombre":"Arequipe"}]}},"categorias":[{"id":"burgers","nombre":"Smash burgers","icono":"burger","tono":["#FFE08A","#FFB703"],"items":[{"id":"clasica","nombre":"Smash clásica","precio":22900,"desc":"Carne de 90 g aplastada, cheddar, pepinillos, cebolla y salsa de la casa.","arte":"burger:lechuga,cebolla,queso,carne","tiempo":12,"opciones":["punto","extras"],"foto":"fotos/clasica.webp","fotoMin":"fotos/min/clasica.webp","tonoFoto":"#5b4532"},{"id":"doble","nombre":"Smash doble","precio":28900,"desc":"Dos carnes, doble cheddar y cebolla caramelizada.","arte":"burger:lechuga,queso,carne,queso,carne,cebolla","tiempo":14,"etiqueta":"Más pedida","opciones":["punto","extras"],"foto":"fotos/doble.webp","fotoMin":"fotos/min/doble.webp","tonoFoto":"#68482f"},{"id":"bacon","nombre":"Bacon smash","precio":31900,"desc":"Doble carne, tocineta crocante, cheddar y salsa BBQ ahumada.","arte":"burger:lechuga,cebolla,carne,tocineta,salsa","tiempo":14,"etiqueta":"BBQ","opciones":["punto","extras"],"foto":"fotos/bacon.webp","fotoMin":"fotos/min/bacon.webp","tonoFoto":"#66462f"},{"id":"triple","nombre":"Triple monstruo","precio":36900,"desc":"Tres carnes, triple cheddar. Solo para valientes.","arte":"burger:queso,carne,queso,carne,queso,carne","tiempo":16,"etiqueta":"Nueva","opciones":["punto","extras"],"foto":"fotos/triple.webp","fotoMin":"fotos/min/triple.webp","tonoFoto":"#58402d"},{"id":"pollo","nombre":"Crispy pollo","precio":25900,"desc":"Pechuga apanada crocante, lechuga, tomate y mayo de ajo.","arte":"burger:lechuga,tomate,pollo,queso","tiempo":14,"opciones":["punto","extras"],"foto":"fotos/pollo.webp","fotoMin":"fotos/min/pollo.webp","tonoFoto":"#6b4d32"},{"id":"veggie","nombre":"Veggie smash","precio":24900,"desc":"Medallón de garbanzo y champiñón, aguacate y tomate.","arte":"burger:lechuga,tomate,aguacate,vegetal","tiempo":12,"opciones":["punto"],"foto":"fotos/veggie.webp","fotoMin":"fotos/min/veggie.webp","tonoFoto":"#674d2b"}]},{"id":"combos","nombre":"Combos","icono":"bolsa","tono":["#FFD3C2","#FF8A65"],"items":[{"id":"arma-combo","nombre":"Arma tu combo","precio":31900,"armable":true,"desc":"Burger + acompañante + bebida, a tu manera.","arte":"combo:lechuga,queso,carne,queso,carne,cebolla","etiqueta":"Nuevo","opciones":["burgerCombo","acompCombo","bebidaCombo","punto"],"foto":"fotos/arma-combo.webp","fotoMin":"fotos/min/arma-combo.webp","tonoFoto":"#634a33"},{"id":"combo-smash","nombre":"Combo Smash doble","precio":36900,"desc":"Smash doble + papas + gaseosa.","arte":"combo:lechuga,queso,carne,queso,carne,cebolla","tiempo":15,"etiqueta":"Ahorras 5 mil","opciones":["bebidaCombo","punto"],"foto":"fotos/combo-smash.webp","fotoMin":"fotos/min/combo-smash.webp","tonoFoto":"#5b3b2e"},{"id":"combo-pareja","nombre":"Combo pareja","precio":64900,"desc":"Dos Smash clásicas, papas grandes con queso y dos gaseosas.","arte":"combo:lechuga,tomate,queso,carne","tiempo":18,"etiqueta":"Para 2","foto":"fotos/combo-pareja.webp","fotoMin":"fotos/min/combo-pareja.webp","tonoFoto":"#654f3c"}]},{"id":"acompanantes","nombre":"Acompañantes","icono":"papas","tono":["#FFF0B3","#FFD54F"],"items":[{"id":"papas","nombre":"Papas a la francesa","nombreOferta":"unas papas a la francesa","precio":8900,"desc":"Corte grueso, sal de la casa.","arte":"papas","tiempo":8,"foto":"fotos/papas.webp","fotoMin":"fotos/min/papas.webp","tonoFoto":"#7d5235"},{"id":"papasq","nombre":"Papas con queso y tocineta","precio":14900,"arte":"papasq","tiempo":10,"etiqueta":"Para compartir","foto":"fotos/papasq.webp","fotoMin":"fotos/min/papasq.webp","tonoFoto":"#5c4730"},{"id":"aros","nombre":"Aros de cebolla","precio":11900,"arte":"aros","tiempo":8,"foto":"fotos/aros.webp","fotoMin":"fotos/min/aros.webp","tonoFoto":"#745b42"},{"id":"nuggets","nombre":"Nuggets x8","precio":15900,"desc":"Con salsa de miel mostaza.","arte":"nuggets","tiempo":10,"foto":"fotos/nuggets.webp","fotoMin":"fotos/min/nuggets.webp","tonoFoto":"#805c38"}]},{"id":"bebidas","nombre":"Bebidas","icono":"vaso","tono":["#D7F0FF","#81D4FA"],"items":[{"id":"gaseosa","nombre":"Gaseosa 400 ml","nombreOferta":"una gaseosa bien fría","precio":4900,"arte":"gaseosa","foto":"fotos/gaseosa.webp","fotoMin":"fotos/min/gaseosa.webp","tonoFoto":"#53392c"},{"id":"limonada","nombre":"Limonada natural","precio":6900,"arte":"limonada","foto":"fotos/limonada.webp","fotoMin":"fotos/min/limonada.webp","tonoFoto":"#665e42"},{"id":"malteada","nombre":"Malteada","precio":14900,"desc":"Vainilla, chocolate o arequipe.","arte":"malteada","opciones":["sabor"],"foto":"fotos/malteada.webp","fotoMin":"fotos/min/malteada.webp","tonoFoto":"#4c4036"},{"id":"jugo","nombre":"Jugo natural","precio":7900,"desc":"Mora, maracuyá o mango.","arte":"jugo","agotado":true}]},{"id":"postres","nombre":"Postres","icono":"postre","tono":["#F8D5C8","#E8A48C"],"items":[{"id":"brownie","nombre":"Brownie con helado","precio":12900,"arte":"brownie","tiempo":5,"foto":"fotos/brownie.webp","fotoMin":"fotos/min/brownie.webp","tonoFoto":"#504137"}]}],"seo":{"url":"https://juanj081920-boop.github.io/kalvora-demos/comida-rapida-premium/","imagen":"https://juanj081920-boop.github.io/kalvora-demos/comida-rapida-premium/fotos/compartir.jpg","titulo":"Smash House · Reserva y pide antes de llegar","descripcion":"Demo de Kalvora: avisa que vas en camino, reserva tu mesa o pide desde tu mesa con un QR. Todo llega al WhatsApp del negocio y se paga en el local."},"demoTextos":{"saludo":"Hola 🔥 Vi la demo del menú digital para comidas rápidas (Smash House Premium) y quiero uno así para mi negocio.","beneficios":["Sin comisiones por pedido: lo que vendes es tuyo","Pedido claro: el cliente lo escribe, tú solo confirmas","Sin pagos en línea: tu cliente paga como siempre"]},"demoGuia":{"eyebrow":"Demostración · Versión premium","titulo":"Tres formas de atender a tu cliente con un solo menú","texto":"Smash House es un negocio de ejemplo. Pruébalo como si fueras un cliente: nada se envía ni se cobra.","pasos":["Voy en camino: avisa a qué hora llega y deja su pedido listo","Reservar mesa: para hoy o para otro día","QR en la mesa: pide desde su celular, con el número de la mesa"],"boton":"Probar como cliente","guia":["Toca «Voy en camino» o «Agregar» en un producto","Toca «Ver mi pedido» abajo","Escribe un nombre y toca «Enviar pedido»"]},"demoVenta":{"eyebrow":"Para ti, dueño del negocio","titulo":"Un solo menú: antes de llegar y dentro de tu local","sub":"Tu cliente reserva, avisa que va en camino o pide desde la mesa. A ti te llega todo ordenado al WhatsApp, y se paga en el local como siempre.","items":[{"ico":"moto","titulo":"El que viene en camino","texto":"Desde otro barrio, otro municipio o la ciudad: avisa a qué hora llega, cuántos son y deja su pedido listo. Tú solo confirmas."},{"ico":"reserva","titulo":"Reservas ordenadas","texto":"Nombre, personas, día y hora en un solo mensaje. Si además pide, va todo junto."},{"ico":"qr","titulo":"QR en cada mesa","texto":"Tu cliente pide desde el celular y te llega con el número de la mesa. Alguien del local debe estar pendiente del WhatsApp, y tu equipo sigue llevando la comida y cobrando."},{"ico":"chat","titulo":"Un link para Google e Instagram","texto":"Ponlo en tu perfil de Google Maps y en tu Instagram con un llamado claro: «Reserva y pide antes de llegar»."},{"ico":"cero","titulo":"Cero comisiones","texto":"Las apps de domicilios se quedan con una parte de cada pedido. Aquí lo que vendes es tuyo, completo."},{"ico":"marca","titulo":"Con tu marca y tus fotos","texto":"Tus colores, tu nombre, tu carta y tu ciudad. Nosotros lo armamos y lo publicamos: tú no tocas nada."}],"cierre":{"titulo":"¿Te lo armamos con tu carta?","texto":"Mándanos tu carta y tus fotos por WhatsApp. Lo dejamos listo para compartir con tus clientes.","puntos":["Pago único","Sin mensualidad obligatoria","Sin comisiones por pedido","Primer año de hosting incluido"],"cta":"Quiero mi menú","nota":"Te respondemos por WhatsApp · Kalvora"}}};
+const CONFIG = {"tema":"smash","demo":true,"qrImprimible":false,"idDemo":"premium","kalvora":{"whatsapp":"573043041242","url":"https://kalvora.com.co"},"negocio":{"nombre":"Smash House","lema":"Smash burgers aplastadas a la plancha, crocantes por fuera y jugosas por dentro.","whatsapp":"573043041242","direccion":"Calle 49 # 50-12","ciudad":"Rionegro"},"horario":{"tz":"America/Bogota","todos":["07:00","23:30"],"dias":{"vie":["07:00","01:00"],"sab":["07:00","01:00"]}},"pedirFueraDeHorario":true,"domicilio":{"activo":true,"minimo":20000,"gratisDesde":70000,"zonas":[{"id":"centro","nombre":"Rionegro centro","costo":4000},{"id":"sap","nombre":"San Antonio de Pereira","costo":5000},{"id":"porvenir","nombre":"El Porvenir","costo":5000},{"id":"llano","nombre":"Llanogrande","costo":7000},{"id":"marinilla","nombre":"Marinilla","costo":9000,"minimo":40000}]},"recoger":true,"pagos":["Efectivo","Nequi","Tarjeta al recibir"],"carrito":{"icono":"burger"},"camino":{"activo":true,"referencia":""},"reservas":{"activo":true,"maxPersonas":10,"horaSugerida":"12:30","paso":30,"ultimaAntes":60,"anticipacion":30,"ocasiones":["Cumpleaños","Reunión de amigos","Celebración"],"sub":"El negocio te confirma por WhatsApp. Pagas allá, como siempre."},"mesas":{"total":12},"hero":{"arte":"hamburguesa","botones":{"principal":"Pedir ahora","secundario":{"texto":"Arma tu combo","categoria":"combos"}},"foto":"fotos/min/portada.webp"},"promo":{"texto":"Combo Smash doble: burger, papas y gaseosa.","detalle":"Te ahorras más de 5 mil","categoria":"combos","cta":"Ver combos"},"recomendados":{"titulo":"Las que más salen","subtitulo":"Pedido fijo de la casa","items":[{"id":"doble","etiqueta":"La reina de la casa","texto":"Dos carnes de 90 g aplastadas a la plancha, doble cheddar fundido, cebolla caramelizada y salsa de la casa en pan brioche."},{"id":"combo-smash","texto":"Smash doble + papas + gaseosa. El pedido de siempre."},{"id":"malteada","texto":"Vainilla, chocolate o arequipe, espesa de verdad."}]},"upsell":{"tras":["burgers"],"ofrecer":["papas","gaseosa"],"texto":"¿Le agregamos {producto}?"},"sugerencias":{"titulo":"¿Le agregas algo?","categorias":["acompanantes","bebidas","postres"],"max":3},"grupos":{"punto":{"titulo":"¿Cómo la quieres?","tipo":"varios","items":[{"id":"sin-cebolla","nombre":"Sin cebolla"},{"id":"sin-pepinillo","nombre":"Sin pepinillos"},{"id":"sin-salsa","nombre":"Salsa aparte"}]},"extras":{"titulo":"Ponle más","tipo":"varios","max":4,"items":[{"id":"carne","nombre":"Carne extra","precio":6000},{"id":"cheddar","nombre":"Cheddar extra","precio":3000},{"id":"tocineta","nombre":"Tocineta crocante","precio":4000},{"id":"jalapeno","nombre":"Jalapeños","precio":2000},{"id":"huevo","nombre":"Huevo frito","precio":2500}]},"burgerCombo":{"titulo":"Escoge tu burger","tipo":"uno","requerido":true,"items":[{"id":"clasica","nombre":"Smash clásica"},{"id":"doble","nombre":"Smash doble","precio":5000},{"id":"bacon","nombre":"Bacon smash","precio":8000},{"id":"pollo","nombre":"Crispy pollo","precio":3000}]},"acompCombo":{"titulo":"Escoge el acompañante","tipo":"uno","requerido":true,"items":[{"id":"papas","nombre":"Papas a la francesa"},{"id":"papasq","nombre":"Papas con queso y tocineta","precio":4000},{"id":"aros","nombre":"Aros de cebolla","precio":2000},{"id":"nuggets","nombre":"Nuggets x6","precio":3000}]},"bebidaCombo":{"titulo":"Escoge la bebida","tipo":"uno","requerido":true,"items":[{"id":"gaseosa","nombre":"Gaseosa 400 ml","defecto":true},{"id":"limonada","nombre":"Limonada natural"},{"id":"malteada","nombre":"Malteada","precio":7000}]},"sabor":{"titulo":"Sabor","tipo":"uno","requerido":true,"items":[{"id":"vainilla","nombre":"Vainilla","defecto":true},{"id":"chocolate","nombre":"Chocolate"},{"id":"arequipe","nombre":"Arequipe"}]}},"categorias":[{"id":"burgers","nombre":"Smash burgers","icono":"burger","tono":["#FFE08A","#FFB703"],"items":[{"id":"clasica","nombre":"Smash clásica","precio":22900,"desc":"Carne de 90 g aplastada, cheddar, pepinillos, cebolla y salsa de la casa.","arte":"burger:lechuga,cebolla,queso,carne","tiempo":12,"opciones":["punto","extras"],"foto":"fotos/clasica.webp","fotoMin":"fotos/min/clasica.webp","tonoFoto":"#5b4532"},{"id":"doble","nombre":"Smash doble","precio":28900,"desc":"Dos carnes, doble cheddar y cebolla caramelizada.","arte":"burger:lechuga,queso,carne,queso,carne,cebolla","tiempo":14,"etiqueta":"Más pedida","opciones":["punto","extras"],"foto":"fotos/doble.webp","fotoMin":"fotos/min/doble.webp","tonoFoto":"#68482f"},{"id":"bacon","nombre":"Bacon smash","precio":31900,"desc":"Doble carne, tocineta crocante, cheddar y salsa BBQ ahumada.","arte":"burger:lechuga,cebolla,carne,tocineta,salsa","tiempo":14,"etiqueta":"BBQ","opciones":["punto","extras"],"foto":"fotos/bacon.webp","fotoMin":"fotos/min/bacon.webp","tonoFoto":"#66462f"},{"id":"triple","nombre":"Triple monstruo","precio":36900,"desc":"Tres carnes, triple cheddar. Solo para valientes.","arte":"burger:queso,carne,queso,carne,queso,carne","tiempo":16,"etiqueta":"Nueva","opciones":["punto","extras"],"foto":"fotos/triple.webp","fotoMin":"fotos/min/triple.webp","tonoFoto":"#58402d"},{"id":"pollo","nombre":"Crispy pollo","precio":25900,"desc":"Pechuga apanada crocante, lechuga, tomate y mayo de ajo.","arte":"burger:lechuga,tomate,pollo,queso","tiempo":14,"opciones":["punto","extras"],"foto":"fotos/pollo.webp","fotoMin":"fotos/min/pollo.webp","tonoFoto":"#6b4d32"},{"id":"veggie","nombre":"Veggie smash","precio":24900,"desc":"Medallón de garbanzo y champiñón, aguacate y tomate.","arte":"burger:lechuga,tomate,aguacate,vegetal","tiempo":12,"opciones":["punto"],"foto":"fotos/veggie.webp","fotoMin":"fotos/min/veggie.webp","tonoFoto":"#674d2b"}]},{"id":"combos","nombre":"Combos","icono":"bolsa","tono":["#FFD3C2","#FF8A65"],"items":[{"id":"arma-combo","nombre":"Arma tu combo","precio":31900,"armable":true,"desc":"Burger + acompañante + bebida, a tu manera.","arte":"combo:lechuga,queso,carne,queso,carne,cebolla","etiqueta":"Nuevo","opciones":["burgerCombo","acompCombo","bebidaCombo","punto"],"foto":"fotos/arma-combo.webp","fotoMin":"fotos/min/arma-combo.webp","tonoFoto":"#634a33"},{"id":"combo-smash","nombre":"Combo Smash doble","precio":36900,"desc":"Smash doble + papas + gaseosa.","arte":"combo:lechuga,queso,carne,queso,carne,cebolla","tiempo":15,"etiqueta":"Ahorras 5 mil","opciones":["bebidaCombo","punto"],"foto":"fotos/combo-smash.webp","fotoMin":"fotos/min/combo-smash.webp","tonoFoto":"#5b3b2e"},{"id":"combo-pareja","nombre":"Combo pareja","precio":64900,"desc":"Dos Smash clásicas, papas grandes con queso y dos gaseosas.","arte":"combo:lechuga,tomate,queso,carne","tiempo":18,"etiqueta":"Para 2","foto":"fotos/combo-pareja.webp","fotoMin":"fotos/min/combo-pareja.webp","tonoFoto":"#654f3c"}]},{"id":"acompanantes","nombre":"Acompañantes","icono":"papas","tono":["#FFF0B3","#FFD54F"],"items":[{"id":"papas","nombre":"Papas a la francesa","nombreOferta":"unas papas a la francesa","precio":8900,"desc":"Corte grueso, sal de la casa.","arte":"papas","tiempo":8,"foto":"fotos/papas.webp","fotoMin":"fotos/min/papas.webp","tonoFoto":"#7d5235"},{"id":"papasq","nombre":"Papas con queso y tocineta","precio":14900,"arte":"papasq","tiempo":10,"etiqueta":"Para compartir","foto":"fotos/papasq.webp","fotoMin":"fotos/min/papasq.webp","tonoFoto":"#5c4730"},{"id":"aros","nombre":"Aros de cebolla","precio":11900,"arte":"aros","tiempo":8,"foto":"fotos/aros.webp","fotoMin":"fotos/min/aros.webp","tonoFoto":"#745b42"},{"id":"nuggets","nombre":"Nuggets x8","precio":15900,"desc":"Con salsa de miel mostaza.","arte":"nuggets","tiempo":10,"foto":"fotos/nuggets.webp","fotoMin":"fotos/min/nuggets.webp","tonoFoto":"#805c38"}]},{"id":"bebidas","nombre":"Bebidas","icono":"vaso","tono":["#D7F0FF","#81D4FA"],"items":[{"id":"gaseosa","nombre":"Gaseosa 400 ml","nombreOferta":"una gaseosa bien fría","precio":4900,"arte":"gaseosa","foto":"fotos/gaseosa.webp","fotoMin":"fotos/min/gaseosa.webp","tonoFoto":"#53392c"},{"id":"limonada","nombre":"Limonada natural","precio":6900,"arte":"limonada","foto":"fotos/limonada.webp","fotoMin":"fotos/min/limonada.webp","tonoFoto":"#665e42"},{"id":"malteada","nombre":"Malteada","precio":14900,"desc":"Vainilla, chocolate o arequipe.","arte":"malteada","opciones":["sabor"],"foto":"fotos/malteada.webp","fotoMin":"fotos/min/malteada.webp","tonoFoto":"#4c4036"},{"id":"jugo","nombre":"Jugo natural","precio":7900,"desc":"Mora, maracuyá o mango.","arte":"jugo","agotado":true}]},{"id":"postres","nombre":"Postres","icono":"postre","tono":["#F8D5C8","#E8A48C"],"items":[{"id":"brownie","nombre":"Brownie con helado","precio":12900,"arte":"brownie","tiempo":5,"foto":"fotos/brownie.webp","fotoMin":"fotos/min/brownie.webp","tonoFoto":"#504137"}]}],"seo":{"url":"https://juanj081920-boop.github.io/kalvora-demos/comida-rapida-premium/","imagen":"https://juanj081920-boop.github.io/kalvora-demos/comida-rapida-premium/fotos/compartir.jpg","titulo":"Smash House · Reserva y pide antes de llegar","descripcion":"Demo de Kalvora: avisa que vas en camino, reserva tu mesa o pide desde tu mesa con un QR. Todo llega al WhatsApp del negocio y se paga en el local."},"demoTextos":{"saludo":"Hola 🔥 Vi la demo del menú digital para comidas rápidas (Smash House Premium) y quiero uno así para mi negocio.","beneficios":["Sin comisiones por pedido: lo que vendes es tuyo","Pedido claro: el cliente lo escribe, tú solo confirmas","Sin pagos en línea: tu cliente paga como siempre"]},"demoGuia":{"eyebrow":"Demostración · Versión premium","titulo":"Tres formas de atender a tu cliente con un solo menú","texto":"Smash House es un negocio de ejemplo. Pruébalo como si fueras un cliente: nada se envía ni se cobra.","pasos":["Voy en camino: avisa a qué hora llega y deja su pedido listo","Reservar mesa: para hoy o para otro día","QR en la mesa: pide desde su celular, con el número de la mesa"],"boton":"Probar como cliente","guia":["Toca «Voy en camino» o «Agregar» en un producto","Toca «Ver mi pedido» abajo","Escribe un nombre y toca «Enviar pedido»"]},"demoVenta":{"eyebrow":"Para ti, dueño del negocio","titulo":"Un solo menú: antes de llegar y dentro de tu local","sub":"Tu cliente reserva, avisa que va en camino o pide desde la mesa. A ti te llega todo ordenado al WhatsApp, y se paga en el local como siempre.","items":[{"ico":"moto","titulo":"El que viene en camino","texto":"Desde otro barrio, otro municipio o la ciudad: avisa a qué hora llega, cuántos son y deja su pedido listo. Tú solo confirmas."},{"ico":"reserva","titulo":"Reservas ordenadas","texto":"Nombre, personas, día y hora en un solo mensaje. Si además pide, va todo junto."},{"ico":"qr","titulo":"QR en cada mesa","texto":"Tu cliente pide desde el celular y te llega con el número de la mesa. Alguien del local debe estar pendiente del WhatsApp, y tu equipo sigue llevando la comida y cobrando."},{"ico":"chat","titulo":"Un link para Google e Instagram","texto":"Ponlo en tu perfil de Google Maps y en tu Instagram con un llamado claro: «Reserva y pide antes de llegar»."},{"ico":"cero","titulo":"Cero comisiones","texto":"Las apps de domicilios se quedan con una parte de cada pedido. Aquí lo que vendes es tuyo, completo."},{"ico":"marca","titulo":"Con tu marca y tus fotos","texto":"Tus colores, tu nombre, tu carta y tu ciudad. Nosotros lo armamos y lo publicamos: tú no tocas nada."}],"cierre":{"titulo":"¿Te lo armamos con tu carta?","texto":"Mándanos tu carta y tus fotos por WhatsApp. Lo dejamos listo para compartir con tus clientes.","puntos":["Pago único","Sin mensualidad obligatoria","Sin comisiones por pedido","Primer año de hosting incluido"],"cta":"Quiero mi menú","nota":"Te respondemos por WhatsApp · Kalvora"}}};
 </script>
 <script>
 /* =====================================================================
@@ -1300,12 +1332,15 @@ function heroLumiere() {
     if (!total || !/^[1-9]\d{0,3}$/.test(MESA_PEDIDA || '')) return null;
     return +MESA_PEDIDA <= total ? +MESA_PEDIDA : null;
   })();
+  const FIJA = !!(CAM && CAM.barraFija && !MESA);
+  let formasVisibles = false; /* mientras se ven los botones de la portada, la barra fija no los repite */
+  let duenoVisible = false; /* la sección para el dueño se lee sin la barra encima */
   let visita = null; /* Aviso o reserva que va junto con el pedido. Solo en memoria: la hora de llegada caduca */
 
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
-  const money = (n) => '$' + Math.round(n).toLocaleString('es-CO');
+  const money = (n) => '$' + Math.round(n).toLocaleString('es-CO') + (C.moneda ? ' ' + C.moneda : '');
   const slug = (s) => String(s || 'menu').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\W+/g, '-').replace(/^-|-$/g, '');
   const esEfectivo = (p) => /^efectivo/i.test(p);
 
@@ -1454,6 +1489,7 @@ function heroLumiere() {
       // En la lista y los recomendados va la miniatura liviana; en la ventana del plato, la foto grande.
       const grande = extra === 'prod__img';
       im.alt = p.nombre; im.loading = 'lazy'; im.decoding = 'async'; im.src = (!grande && p.fotoMin) || p.foto;
+      if (C.fotosGrandes && !grande && p.fotoMin) { im.srcset = p.fotoMin + ' 480w, ' + p.foto + ' 900w'; im.sizes = '(min-width:560px) 50vw, 100vw'; }
       im.addEventListener('load', () => im.classList.add('lista'));
       im.addEventListener('error', () => { im.remove(); ilus(); });
       d.append(im);
@@ -1508,12 +1544,20 @@ function heroLumiere() {
   if (s2 && s2.categoria) { const b2 = el('a', 'btn btn--oscuro', s2.texto || 'Ver más'); b2.href = '#cat-' + s2.categoria; botones.append(b2); }
 
   const heroArte = $('#hero-arte');
+  if (HERO.inmersiva) $('#hero').classList.add('hero--inmersiva');
   if (HERO.foto) {
     const im = new Image(); im.alt = ''; im.fetchPriority = 'high'; im.src = HERO.foto;
     im.addEventListener('error', () => { heroArte.hidden = true; $('#hero').classList.remove('hero--arte'); });
     heroArte.append(im); heroArte.hidden = false; $('#hero').classList.add('hero--arte');
   } else if (HERO.arte && HEROES[HERO.arte]) {
     heroArte.innerHTML = HEROES[HERO.arte](); heroArte.hidden = false; $('#hero').classList.add('hero--arte');
+  }
+  if (HERO.decoracion === 'zocalo') {
+    /* Dibujo propio inspirado en los zócalos: un nicho con montañas y un rombo, en relieve de color */
+    const [c1, c2, c3, c4] = HERO.zocalo || ['#B5512C', '#F7F0E3', '#D9A441', '#2F5D46'];
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="168" height="48" viewBox="0 0 168 48"><rect width="84" height="48" fill="${c1}"/><rect x="84" width="84" height="48" fill="${c3}"/><rect x="4" y="4" width="76" height="40" fill="none" stroke="${c2}" stroke-width="2"/><path d="M18 44V24a24 20 0 0148 0v20" fill="${c4}" stroke="${c2}" stroke-width="2"/><path d="M21 44l11-15 7 9 6-7 18 13z" fill="${c2}"/><rect x="88" y="4" width="76" height="40" fill="none" stroke="${c4}" stroke-width="2"/><path d="M126 9l16 15-16 15-16-15z" fill="${c1}" stroke="${c2}" stroke-width="2"/><circle cx="126" cy="24" r="4" fill="${c2}"/><path d="M92 8h9M92 8v9M160 8h-9M160 8v9M92 40h9M92 40v-9M160 40h-9M160 40v-9" stroke="${c4}" stroke-width="2" fill="none"/></svg>`;
+    const pz = $('#picado'); pz.style.backgroundImage = 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")'; pz.hidden = false;
+    $('#hero').classList.add('hero--zocalo');
   }
   if (HERO.decoracion === 'picado') {
     const cols = HERO.picado || ['#E63946', '#FFB703', '#2FA66A', '#F77F00', '#E85D9A'];
@@ -1600,6 +1644,7 @@ function heroLumiere() {
       const carta = (c.estilo || C.estilo) === 'carta';
       const fila = el('div', 'item__fila');
       const precio = el('span', 'precio', (p.grupos.length && p.precioDesde ? 'Desde ' : '') + money(p.precio));
+      if (C.moneda) { precio.textContent = precio.textContent.slice(0, -C.moneda.length); precio.append(el('small', null, C.moneda)); }
       const ctl = el('div', 'item__ctl'); ctl.dataset.ctl = p.id;
       fila.append(precio, ctl);
       cuerpo.append(h3);
@@ -1857,7 +1902,7 @@ function heroLumiere() {
     (cfg.categorias || []).forEach((cid) => { if (catsEnCarro.has(cid)) return; const c = cats.find((x) => x.id === cid); if (c) c.items.forEach((i) => add(i.id)); });
     return out.slice(0, max);
   }
-  const entregaLabel = { domicilio: 'Domicilio', recoger: 'Recoger en el local', local: 'Comer en el local', mesa: 'En la mesa' };
+  const entregaLabel = { domicilio: 'Domicilio', recoger: 'Recoger en el local', local: (CAM && CAM.etiquetaLocal) || 'Comer en el local', mesa: 'En la mesa' };
 
   function pintarPedido() {
     const t = totales(), estado = estadoActual();
@@ -1907,8 +1952,17 @@ function heroLumiere() {
     $('#barra-ico').style.setProperty('--nivel', String(Math.min(1, t.n / 6)));
     $('#barra').setAttribute('aria-label', 'Ver mi pedido: ' + t.n + ' ' + (t.n === 1 ? 'producto' : 'productos') + ', total ' + money(t.total));
     $('#barra-total').textContent = money(t.total);
+    pintarFija(t.n);
     pintarVisita();
     pintarGuia();
+  }
+
+  function pintarFija(n) {
+    if (!FIJA) return;
+    if (!n) cerrarOferta();
+    $('#barra-fija').hidden = (!n && formasVisibles) || duenoVisible;
+    $('#bf-principal').hidden = n > 0;
+    document.body.classList.toggle('con-fija', !$('#barra-fija').hidden);
   }
 
   /* Franja "Llegan 4 · como a las 2:30 p. m." o "Estás en la mesa 3", y su espejo dentro del pedido */
@@ -1919,15 +1973,15 @@ function heroLumiere() {
     f.hidden = !hay;
     document.body.classList.toggle('con-franja', hay);
     if (hay) {
-      $('#franja-txt').textContent = MESA ? 'Estás en la mesa ' + MESA : v.corto;
+      $('#franja-txt').textContent = MESA ? 'Estás en la mesa ' + MESA : v.corto.replace(/ ([ap])\. m\./g, '\u00a0$1.\u00a0m.');
       $('#franja-acc').hidden = !!MESA;
       $('#franja-salir').hidden = !(MESA && C.demo);
     }
     const c = $('#campo-visita');
     c.hidden = tipoActual() !== 'local';
     if (!c.hidden) {
-      $('#visita-txt').textContent = v ? v.corto : '¿Cuándo vienes? Así te tienen la comida lista.';
-      $('#visita-camino').textContent = v ? 'Cambiar' : 'Voy en camino';
+      $('#visita-txt').textContent = v ? v.corto : '¿Cuándo vienes? Así pueden tener tu comida lista.';
+      $('#visita-camino').textContent = v ? 'Cambiar' : (CAM && CAM.boton) || 'Voy en camino';
       $('#visita-reservar').hidden = !!v || !RES;
     }
   }
@@ -2135,7 +2189,14 @@ function heroLumiere() {
   }
   function pintarHoras() {
     const sel = $('#r-hora'), prev = sel.value, hs = horasDe($('#r-fecha').value);
-    sel.replaceChildren(...(hs.length ? hs.map((m) => new Option(fmt(m % 1440), String(m))) : [new Option('Sin horarios ese día', '')]));
+    const opcion = (m) => new Option(fmt(m % 1440), String(m));
+    if (hs.length && RES.desayunoHasta) {
+      /* El desayuno de paseo se ve aparte en la lista de horas */
+      const tope = toMin(RES.desayunoHasta), g1 = document.createElement('optgroup'), g2 = document.createElement('optgroup');
+      g1.label = 'Desayuno de paseo'; g2.label = 'Almuerzo y comida';
+      g1.append(...hs.filter((m) => m < tope).map(opcion)); g2.append(...hs.filter((m) => m >= tope).map(opcion));
+      sel.replaceChildren(...[g1, g2].filter((g) => g.children.length));
+    } else sel.replaceChildren(...(hs.length ? hs.map(opcion) : [new Option('Sin horarios ese día', '')]));
     sel.disabled = !hs.length;
     if (hs.some((m) => String(m) === prev)) sel.value = prev;
     else { const pref = hs.find((m) => m >= toMin(RES.horaSugerida || '19:30')); if (pref != null) sel.value = String(pref); }
@@ -2149,7 +2210,7 @@ function heroLumiere() {
       $('#reserva-sec').hidden = false;
     }
     /* Con las formas de uso, ocasión y notas quedan guardadas para que el formulario se vea corto */
-    if (!CAM) { $('#r-mas').open = true; $('#r-mas-t').hidden = true; }
+    if (!CAM || RES.completo) { $('#r-mas').open = true; $('#r-mas-t').hidden = true; }
     if (RES.ocasiones) $('#r-ocasion').replaceChildren(new Option('Ninguna en especial', ''), ...RES.ocasiones.map((o) => new Option(o, o)));
     $('#reserva-sub').textContent = RES.sub || 'Te confirmamos por WhatsApp en minutos.';
     $('#r-nota').textContent = C.demo ? 'Demo: no se envía nada ni se guardan tus datos.' : 'Te abrimos WhatsApp con la reserva lista para enviar.';
@@ -2158,10 +2219,12 @@ function heroLumiere() {
     const f = $('#r-fecha'), hoy = hoyISO();
     f.min = hoy; f.max = sumarDias(hoy, RES.diasAdelante || 60);
     f.value = horasDe(hoy).length ? hoy : sumarDias(hoy, 1);
+    /* Para más tarde el mismo día está "Voy en camino" */
+    if (RES.desdeManana) { f.min = sumarDias(hoy, 1); f.value = f.min; }
     f.addEventListener('change', () => { if (f.value < f.min) f.value = f.min; if (f.value > f.max) f.value = f.max; pintarHoras(); $('#r-error').textContent = ''; });
     pintarHoras();
   }
-  function abrirReserva() { if (!RES) return; if (CAM) { const f = $('#r-fecha'), hoy = hoyISO(); f.min = hoy; f.max = sumarDias(hoy, RES.diasAdelante || 60); if (f.value < hoy) f.value = hoy; } $('#r-nombre').value = $('#r-nombre').value || est.nombre; pintarHoras(); botonesVisita('#r-enviar', '#r-con-pedido', 'Enviar reserva por WhatsApp', 'Enviar solo la reserva'); dlgRes.showModal(); }
+  function abrirReserva() { if (!RES) return; if (CAM) { const f = $('#r-fecha'), hoy = hoyISO(); f.min = RES.desdeManana ? sumarDias(hoy, 1) : hoy; f.max = sumarDias(hoy, RES.diasAdelante || 60); if (f.value < f.min) f.value = f.min; } $('#r-nombre').value = $('#r-nombre').value || est.nombre; pintarHoras(); botonesVisita('#r-enviar', '#r-con-pedido', 'Enviar reserva por WhatsApp', 'Enviar solo la reserva'); dlgRes.showModal(); }
   /* Con productos en el pedido, lo natural es seguir con ellos; sin productos, enviar de una */
   function botonesVisita(sEnviar, sPedido, txtSolo, txtSoloConPedido) {
     const enviar = $(sEnviar), pedido = $(sPedido), n = est.lineas.reduce((s, l) => s + l.q, 0);
@@ -2181,7 +2244,7 @@ function heroLumiere() {
     visibilidadCampos(); pintarPedido();
     dlg.close();
     if (est.lineas.length) { if (!matchMedia('(min-width:1000px)').matches && !cart.classList.contains('open')) abrir(); }
-    else { $('#menu').scrollIntoView({ behavior: reducidoMov ? 'auto' : 'smooth' }); toast('Elige lo que quieres: te lo tienen listo'); }
+    else { $('#menu').scrollIntoView({ behavior: reducidoMov ? 'auto' : 'smooth' }); toast('Elige lo que quieres y va con tu aviso'); }
   }
   const personasTxt = (p, max, frase) => (+p === max ? frase + max + ' o más' : frase + p);
   function leerReserva() {
@@ -2201,6 +2264,7 @@ function heroLumiere() {
     const dias = (Date.parse(dia + 'T00:00:00Z') - Date.parse(hoyISO() + 'T00:00:00Z')) / 86400000;
     const vence = Date.now() + (dias * 1440 + h % 1440 - ahora().m) * 60000;
     const extras = [];
+    if (RES.desayunoHasta && h < toMin(RES.desayunoHasta)) extras.push('Plan: desayuno de paseo');
     if ($('#r-ocasion').value) extras.push('Ocasión: ' + $('#r-ocasion').value);
     if ($('#r-notas').value.trim()) extras.push('Notas: ' + $('#r-notas').value.trim());
     return { modo: 'reserva', vence, lineas: [personasTxt(d.personas, max, 'Mesa para '), cuando], extras, corto: personasTxt(d.personas, max, 'Mesa para ') + ' · ' + cuando };
@@ -2246,7 +2310,10 @@ function heroLumiere() {
       const a = toMin(it[0]) + off; let c = toMin(it[1]) + off; if (c <= a) c += 1440;
       tramos.push([a, c]);
     });
-    if (tramos.some(([a, c]) => m >= a && m < c)) return { ok: true };
+    const margen = (CAM && +CAM.margenCierre) || 0;
+    if (tramos.some(([a, c]) => m >= a && m < c - margen)) return { ok: true };
+    const casi = tramos.find(([a, c]) => m >= a && m < c);
+    if (casi) return { ok: false, texto: 'A esa hora ya casi cerramos: cerramos ' + aLas(casi[1] % 1440) + '.' };
     const sig = tramos.find(([a]) => a > m);
     return { ok: false, texto: 'A esa hora estamos cerrados.' + (sig ? ' Abrimos ' + (sig[0] >= 1440 ? 'mañana' : 'hoy') + ' ' + aLas(sig[0] % 1440) : '') };
   }
@@ -2289,11 +2356,13 @@ function heroLumiere() {
     const p = +(($('input[name=c-personas]:checked') || {}).value || 2), cuando = cuandoLlega(m);
     const somos = p === CAM_MAX ? 'Somos ' + CAM_MAX + ' o más' : p === 1 ? '1 persona' : 'Somos ' + p;
     const llegan = p === CAM_MAX ? 'Llegan ' + CAM_MAX + ' o más' : p === 1 ? 'Llega 1' : 'Llegan ' + p;
-    return { nombre, v: { modo: 'camino', vence: Date.now() + (m - ahora().m) * 60000, lineas: ['Vamos en camino 🚗', 'Llegamos ' + cuando, somos], corto: llegan + ' · ' + cuando } };
+    return { nombre, v: { modo: 'camino', vence: Date.now() + (m - ahora().m) * 60000, lineas: [cuando.startsWith('mañana') ? 'Vamos para allá 🚗' : 'Vamos en camino 🚗', 'Llegamos ' + cuando, somos], corto: llegan + ' · ' + cuando } };
   }
   if (CAM) {
     $('#c-personas').replaceChildren(...Array.from({ length: CAM_MAX }, (_, i) => { const l = el('label'); const r = el('input'); r.type = 'radio'; r.name = 'c-personas'; r.value = String(i + 1); if (i === 1) r.checked = true; l.append(r, document.createTextNode(i + 1 === CAM_MAX ? CAM_MAX + '+' : String(i + 1))); return l; }));
     $('#c-en').replaceChildren(...[['30', '30 min'], ['60', '1 hora'], ['120', '2 horas'], ['otra', 'Otra hora']].map(([v, t]) => { const l = el('label'); const r = el('input'); r.type = 'radio'; r.name = 'c-en'; r.value = v; if (v === '60') r.checked = true; l.append(r, document.createTextNode(t)); return l; }));
+    if (CAM.subDialogo) $('#camino-sub').textContent = CAM.subDialogo;
+    if (CAM.boton) $('#camino-t').textContent = CAM.boton;
     $('#c-en').addEventListener('change', revisarCamino);
     $('#c-otra').addEventListener('change', revisarCamino);
     $('#c-nota').textContent = C.demo ? 'Demo: no se envía nada ni se guardan tus datos.' : 'Te abrimos WhatsApp con el aviso listo: solo toca «Enviar» allá.';
@@ -2341,6 +2410,7 @@ function heroLumiere() {
     }
   }
   $('#c-llegar').hidden = !hayLlegar;
+  if (FIJA) { $('#bf-principal').textContent = CAM.boton || 'Voy en camino'; $('#bf-mapa').hidden = !hayLlegar; }
 
   /* ---------- Portada: las formas de usar el menú ---------- */
   const ICO_FORMA = {
@@ -2362,17 +2432,39 @@ function heroLumiere() {
     botones.replaceChildren(m, v);
     $('.datos').hidden = true;
     $('#reserva-sec').hidden = true;
+    if (HERO.lemaMesa) $('#lema').textContent = HERO.lemaMesa;
   } else if (CAM) {
+    if (HERO.bajada) $('#lema').after(el('p', 'bajada', HERO.bajada));
     const fs = [];
-    const f1 = forma('button', 'forma--principal', 'camino', 'Voy en camino', 'Avisa a qué hora llegas y deja tu pedido listo'); f1.type = 'button'; f1.dataset.camino = '1'; fs.push(f1);
-    if (RES) { const f2 = forma('button', '', 'reserva', RES.boton || 'Reservar mesa', 'Para hoy o para otro día'); f2.type = 'button'; f2.dataset.reservar = '1'; fs.push(f2); }
-    const f3 = forma('a', '', 'menu', 'Ver el menú', [DOM.activo ? 'domicilio' : '', RECOGER ? 'para recoger' : ''].filter(Boolean).join(' o ').replace(/^./, (c) => c.toUpperCase()) || 'Mira todo lo que hay'); f3.href = '#menu'; fs.push(f3);
+    const f1 = forma('button', 'forma--principal', 'camino', CAM.boton || 'Voy en camino', CAM.subBoton || 'Avisa a qué hora llegas y deja tu pedido listo'); f1.type = 'button'; f1.dataset.camino = '1'; fs.push(f1);
+    if (RES) { const f2 = forma('button', '', 'reserva', RES.boton || 'Reservar mesa', RES.subBoton || 'Para hoy o para otro día'); f2.type = 'button'; f2.dataset.reservar = '1'; fs.push(f2); }
+    const f3 = forma('a', '', 'menu', CAM.textoMenu || 'Ver el menú', CAM.subMenu || [DOM.activo ? 'domicilio' : '', RECOGER ? 'para recoger' : ''].filter(Boolean).join(' o ').replace(/^./, (c) => c.toUpperCase()) || 'Mira todo lo que hay'); f3.href = '#menu'; fs.push(f3);
     const lista = el('div', 'formas'); lista.append(...fs);
     botones.replaceChildren(lista);
     const pie = el('div', 'formas__pie');
     if (hayLlegar) { const l = el('button', 'formas__link', 'Cómo llegar'); l.type = 'button'; l.dataset.llegar = '1'; pie.append(l); }
-    if (C.demo && C.mesas && +C.mesas.total) { const q = el('a', 'formas__link', 'Probar QR en la mesa'); q.href = '?mesa=' + Math.min(3, +C.mesas.total); pie.append(q); }
+    if (C.demo && C.mesas && +C.mesas.total && !C.mesas.probarEnDueno) { const q = el('a', 'formas__link', 'Probar QR en la mesa'); q.href = '?mesa=' + Math.min(C.mesas.ejemplo || 3, +C.mesas.total); pie.append(q); }
     if (pie.children.length) botones.append(pie);
+  }
+  /* "Para tu parada": cada cliente pone solo lo que de verdad tiene */
+  if (C.parada && !MESA && (C.parada.items || []).length) {
+    const ICO_P = {
+      parqueo: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 17V8h3a2.5 2.5 0 010 5h-3"/>',
+      banos: '<circle cx="8" cy="6" r="2"/><circle cx="16" cy="6" r="2"/><path d="M8 10v10M5.5 11h5M16 10l-3 7h6l-3-7M14.5 17v3M17.5 17v3"/>',
+      mascotas: '<circle cx="6" cy="11" r="1.7"/><circle cx="10" cy="7" r="1.7"/><circle cx="14" cy="7" r="1.7"/><circle cx="18" cy="11" r="1.7"/><path d="M12 11c-3 0-5 3-5 5.500 0 3 3.500 2.500 5 1.500 1.500 1 5 1.500 5-1.500 0-2.500-2-5.500-5-5.500z"/>',
+      ninos: '<circle cx="12" cy="8" r="4.500"/><path d="M10 7.500h.01M14 7.500h.01M10.500 10c.8.700 2.200.700 3 0M6 21c.6-4 3-6 6-6s5.400 2 6 6"/>',
+      tarjeta: ICO_DATO.pago, vista: '<path d="M2 20l7-11 4 6 3-4 6 9z"/><circle cx="17" cy="6" r="2"/>',
+    };
+    if (C.parada.foto) { const im = new Image(); im.className = 'parada__foto'; im.alt = C.parada.fotoAlt || ''; im.loading = 'lazy'; im.src = C.parada.foto; $('#parada-t').before(im); }
+    $('#parada-t').textContent = C.parada.titulo || 'Para tu parada';
+    $('#parada-sub').textContent = C.parada.sub || ''; $('#parada-sub').hidden = !C.parada.sub;
+    $('#parada-lista').replaceChildren(...C.parada.items.map((it) => {
+      const li = el('li'), i = el('i');
+      i.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICO_P[it.ico] || ICO_P.vista}</svg>`;
+      li.append(i, el('span', null, it.texto));
+      return li;
+    }));
+    $('#parada').hidden = false;
   }
   if (MESA_PEDIDA != null && C.mesas && !MESA) setTimeout(() => toast('No encontramos esa mesa. Pídele ayuda al personal.'), 300);
 
@@ -2472,7 +2564,7 @@ function heroLumiere() {
     let visto = false; try { visto = !!localStorage.getItem(GUIA_KEY); localStorage.setItem(GUIA_KEY, '1'); } catch (e) { /* sin almacenamiento */ }
     /* Quien llega al QR de una mesa o a un enlace directo viene a hacer algo: no se le interrumpe */
     const directo = !!MESA || (CAM && /^#(camino|reservar|pedir)$/.test(location.hash));
-    if (!directo && (!visto || /[?&]intro\b/.test(location.search))) setTimeout(() => { if (!document.querySelector('dialog[open]')) dlgBv.showModal(); }, 450);
+    if (!directo && ((!visto && GUIA.alAbrir !== false) || /[?&]intro\b/.test(location.search))) setTimeout(() => { if (!document.querySelector('dialog[open]')) dlgBv.showModal(); }, 450);
     new MutationObserver(pintarGuia).observe(cart, { attributes: true, attributeFilter: ['class'] });
     matchMedia('(min-width:1000px)').addEventListener('change', pintarGuia);
   }
@@ -2502,6 +2594,7 @@ function heroLumiere() {
     $('#cierre-puntos').replaceChildren(...(ci.puntos || []).map((p) => el('li', null, p)));
     const cta = $('#cierre-cta'); cta.textContent = ci.cta || 'Quiero el mío'; cta.href = waKalvora();
     $('#cierre-nota').textContent = ci.nota || '';
+    if (C.mesas && +C.mesas.total && C.mesas.probarEnDueno) { const q = el('a', 'probar-mesa', 'Probar QR en la mesa'); q.href = '?mesa=' + Math.min(C.mesas.ejemplo || 3, +C.mesas.total); $('#para-ti-grid').after(q); }
     $('#para-ti').hidden = false;
   }
 
@@ -2536,7 +2629,9 @@ function heroLumiere() {
   setInterval(() => { pintarEstado(); pintarPedido(); }, 60000);
 
   /* Enlaces directos para Google Maps e Instagram: #camino, #reservar y #pedir */
-  if (MESA && C.demo) terminarGuia();
+  if (C.demo && (MESA || FIJA)) terminarGuia();
+  if (FIJA && $('.formas')) new IntersectionObserver((es) => { formasVisibles = es[0].isIntersecting; pintarFija(totales().n); }).observe($('#hero-botones'));
+  if (FIJA) new IntersectionObserver((es) => { duenoVisible = es[0].isIntersecting; pintarFija(totales().n); }).observe($('#para-ti'));
   function irAlEnlace() {
     if (MESA || !CAM) return;
     if (location.hash === '#camino') abrirCamino();
