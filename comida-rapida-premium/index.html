@@ -1740,7 +1740,7 @@ function heroLumiere() {
     $('#upsell-t').textContent = (UP.texto || '¿Le agregamos {producto}?').replace('{producto}', o.nombreOferta || o.nombre);
     $('#upsell-precio').textContent = 'por ' + money(o.precio) + ' más';
     clearTimeout(upTimer);
-    setTimeout(() => { box.hidden = false; box.classList.remove('sale'); }, reducidoMov ? 0 : 650);
+    setTimeout(() => { if ($('#cart').classList.contains('open')) return; box.hidden = false; box.classList.remove('sale'); }, reducidoMov ? 0 : 650); /* con el pedido abierto taparía el botón de enviar */
     upTimer = setTimeout(cerrarOferta, 9000);
   }
   function cerrarOferta() { const b = $('#upsell'); if (b.hidden) return; b.classList.add('sale'); setTimeout(() => { b.hidden = true; b.classList.remove('sale'); }, 250); clearTimeout(upTimer); }
