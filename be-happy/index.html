@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Be Happy Waffles · Menú</title>
+<meta name="description" content="Waffles belgas, waffles de pan de yuca, crepes, arepas, postres y bebidas en San Antonio de Pereira, Rionegro. Mira el menú y pide por WhatsApp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F4E4D3">
+<meta property="og:title" content="Be Happy Waffles · Menú">
+<meta property="og:description" content="Calidad que se siente, felicidad que se comparte. Mira el menú y pide por WhatsApp.">
+<meta property="og:image" content="img/productos/waffle-happy.webp">
+<link rel="icon" href="img/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div class="fondo" aria-hidden="true">
+  <img class="fondo__cerezo" src="img/deco/cerezo.webp" alt="">
+  <img class="fondo__cerezo fondo__cerezo--abajo" src="img/deco/cerezo.webp" alt="">
+  <div class="fondo__madera"></div>
+  <div class="fondo__madera fondo__madera--abajo"></div>
+  <svg class="fondo__hojas" viewBox="0 0 120 260"><use href="#hojas"/></svg>
+  <span class="petalo" style="--x:12%;--d:0s"></span><span class="petalo" style="--x:38%;--d:6s"></span>
+  <span class="petalo" style="--x:64%;--d:11s"></span><span class="petalo" style="--x:86%;--d:3s"></span>
+</div>
+
+<header class="tope">
+  <span class="estado" id="estado">Abierto</span>
+  <button class="carrito-btn" id="abrirCarrito" aria-label="Ver mi pedido">
+    <svg viewBox="0 0 24 24"><use href="#i-carrito"/></svg><span class="carrito-btn__n" id="nCarrito">0</span>
+  </button>
+</header>
+
+<main id="app">
+  <!-- INICIO -->
+  <section class="vista" id="v-inicio" aria-labelledby="t-inicio">
+    <div class="neon">
+      <img src="img/logo.webp" alt="Be Happy Waffles" width="600" height="600">
+    </div>
+    <p class="lema">Calidad que se siente, felicidad que se comparte</p>
+    <h1 class="titulo-script" id="t-inicio">Nuestro Menú <svg class="corazon" viewBox="0 0 24 24"><use href="#i-corazon"/></svg></h1>
+    <svg class="subrayado" viewBox="0 0 300 14" aria-hidden="true"><path d="M4 9 C 60 3, 120 12, 180 7 S 270 4, 296 8"/></svg>
+    <div class="promo-slot"></div>
+    <div class="nubes" id="nubes"></div>
+    <div class="reco-slot"></div>
+  </section>
+
+  <!-- MENU -->
+  <section class="vista" id="v-menu" hidden aria-labelledby="t-menu">
+    <h1 class="titulo-script" id="t-menu">Menú</h1>
+    <nav class="chips" id="chips" aria-label="Categorías"></nav>
+    <div class="promo-slot"></div>
+    <div class="reco-slot"></div>
+    <div id="secciones"></div>
+  </section>
+
+  <!-- FAVORITOS -->
+  <section class="vista" id="v-favoritos" hidden aria-labelledby="t-fav">
+    <h1 class="titulo-script" id="t-fav">Tus favoritos</h1>
+    <div class="productos" id="listaFav"></div>
+    <p class="vacio" id="favVacio">Toca el corazón de un producto para guardarlo aquí.</p>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="vista" id="v-contacto" hidden aria-labelledby="t-con">
+    <h1 class="titulo-script" id="t-con">Contáctanos</h1>
+    <div class="tarjeta-info">
+      <img class="tarjeta-info__logo" src="img/logo.webp" alt="" width="120" height="120">
+      <p class="tarjeta-info__lema">“Calidad que se siente, felicidad que se comparte”</p>
+      <h2>Horario</h2>
+      <ul class="horario">
+        <li><span>Lunes a viernes</span><b>1:30 p. m. – 9:00 p. m.</b></li>
+        <li><span>Sábado y domingo</span><b>8:30 a. m. – 9:00 p. m.</b></li>
+      </ul>
+      <h2>Dónde estamos</h2>
+      <p>San Antonio de Pereira, Rionegro, Antioquia</p>
+      <div class="acciones">
+        <a class="btn btn--pastel" id="lnkWa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>Escríbenos</a>
+        <a class="btn btn--crema" id="lnkMapa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><use href="#i-pin"/></svg>Cómo llegar</a>
+        <a class="btn btn--crema" id="lnkIg" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><use href="#i-ig"/></svg>@wafflesbehappycol</a>
+      </div>
+      <p class="nota">WhatsApp: <span id="txtWa"></span></p>
+    </div>
+  </section>
+</main>
+
+<nav class="navbar" aria-label="Navegación principal">
+  <a href="#inicio" data-v="inicio"><svg viewBox="0 0 24 24"><use href="#i-casa"/></svg><span>Inicio</span></a>
+  <a href="#menu" data-v="menu"><svg viewBox="0 0 24 24"><use href="#i-grid"/></svg><span>Menú</span></a>
+  <a href="#favoritos" data-v="favoritos"><svg viewBox="0 0 24 24"><use href="#i-estrella"/></svg><span>Favoritos</span></a>
+  <a href="#contacto" data-v="contacto"><svg viewBox="0 0 24 24"><use href="#i-persona"/></svg><span>Contacto</span></a>
+</nav>
+
+<!-- Detalle del producto -->
+<dialog class="hoja" id="dlgProducto" aria-labelledby="pNombre">
+  <button class="cerrar" data-cerrar aria-label="Cerrar">×</button>
+  <div class="hoja__foto"><img id="pFoto" alt=""></div>
+  <div class="hoja__cuerpo">
+    <p class="hoja__etq" id="pEtq"></p>
+    <h2 id="pNombre"></h2>
+    <p id="pDesc"></p>
+    <p class="hoja__precio" id="pPrecio"></p>
+    <div class="hoja__fila">
+      <div class="cantidad"><button id="pMenos" aria-label="Quitar uno">−</button><output id="pCant">1</output><button id="pMas" aria-label="Agregar uno">+</button></div>
+      <button class="btn btn--pastel btn--ancho" id="pAgregar">Agregar</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Carrito -->
+<dialog class="hoja" id="dlgCarrito" aria-labelledby="tCarrito">
+  <button class="cerrar" data-cerrar aria-label="Cerrar">×</button>
+  <div class="hoja__cuerpo">
+    <h2 class="titulo-script titulo-script--sm" id="tCarrito">Mi pedido</h2>
+    <ul class="lineas" id="lineas"></ul>
+    <div class="sugerir" id="sugerir"></div>
+    <p class="vacio" id="carritoVacio">Aún no has agregado nada. ¡Antójate!</p>
+    <form id="formPedido" class="form">
+      <div class="total"><span>Total</span><b id="total">$0</b></div>
+      <label>Tu nombre<input id="fNombre" autocomplete="name" required placeholder="¿A nombre de quién?"></label>
+      <fieldset class="opciones"><legend>¿Cómo lo quieres?</legend>
+        <label><input type="radio" name="modo" value="Recoger en el local" checked> Recoger en el local</label>
+        <label><input type="radio" name="modo" value="Comer en el local"> Comer en el local</label>
+      </fieldset>
+      <label>Nota (opcional)<textarea id="fNota" rows="2" placeholder="Ej.: sin salsa, llego a las 4"></textarea></label>
+      <button class="btn btn--pastel btn--ancho" type="submit"><svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>Enviar pedido por WhatsApp</button>
+      <p class="nota">Pagas en el local. El pedido se confirma por WhatsApp.</p>
+    </form>
+  </div>
+</dialog>
+
+<!-- ¿Lo acompañas? (aparece al agregar un plato fuerte) -->
+<dialog class="hoja hoja--mini" id="dlgAcompanar" aria-labelledby="tAcomp">
+  <button class="cerrar" data-cerrar aria-label="Cerrar">×</button>
+  <div class="hoja__cuerpo">
+    <h2 class="titulo-script titulo-script--sm" id="tAcomp">¿Lo acompañas con algo?</h2>
+    <div class="sugerir sugerir--grande" id="acompItems"></div>
+    <button class="btn btn--crema btn--ancho" data-cerrar>No, gracias</button>
+  </div>
+</dialog>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<!-- Íconos y dibujos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-casa" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></symbol>
+    <symbol id="i-estrella" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8Z"/></symbol>
+    <symbol id="i-persona" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1-4 4-6 7.5-6s6.5 2 7.5 6"/></symbol>
+    <symbol id="i-carrito" viewBox="0 0 24 24"><path d="M2.5 4h2.6l2.3 10.5h10.4L20 7.5H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></symbol>
+    <symbol id="i-corazon" viewBox="0 0 24 24"><path d="M12 20.5S3.5 15 3.5 9A4.5 4.5 0 0 1 12 6.7 4.5 4.5 0 0 1 20.5 9c0 6-8.5 11.5-8.5 11.5Z"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4 20l1.2-3.6A8 8 0 1 1 8 19.1Z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .9a5 5 0 0 1-2.8-2.8l.9-1-1-2Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></symbol>
+    <symbol id="i-waffle" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></symbol>
+    <symbol id="i-yuca" viewBox="0 0 24 24"><path d="M4 9.5h16l-1.5 3h-13Z"/><path d="M5 15.5h14"/><path d="M5.5 15.5c0 2 1.5 3 3 3h7c1.5 0 3-1 3-3"/><path d="M12 9.5V4"/><path d="M6 9.5c0-2 2-3.5 6-3.5s6 1.5 6 3.5"/></symbol>
+    <symbol id="i-crepe" viewBox="0 0 24 24"><path d="M3.5 7.5h17L12 21Z"/><path d="M6 7.5c1-2 3-3 6-3s5 1 6 3"/><path d="M8.5 11.5h7"/></symbol>
+    <symbol id="i-arepa" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8.5" ry="6.5"/><circle cx="9" cy="10.5" r=".7"/><circle cx="14" cy="13.5" r=".7"/><circle cx="13.5" cy="9.5" r=".6"/></symbol>
+    <symbol id="i-fresa" viewBox="0 0 24 24"><path d="M12 8c4 0 7 1.5 7 4.5S15.5 21 12 21 5 15.5 5 12.5 8 8 12 8Z"/><path d="M9 4.5c1 1.5 2 2.5 3 3.5 1-1 2-2 3-3.5"/><path d="M12 8V3.5"/></symbol>
+    <symbol id="i-cafe" viewBox="0 0 24 24"><path d="M4.5 9.5h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5Z"/><path d="M16.5 11h1.5a2.3 2.3 0 0 1 0 4.6h-1.8"/><path d="M8.5 3.5c-1 1 1 1.8 0 3M12 3.5c-1 1 1 1.8 0 3"/></symbol>
+    <symbol id="i-vaso" viewBox="0 0 24 24"><path d="M6 7h12l-1.4 13.5H7.4Z"/><path d="M5 7h14"/><path d="M13 7l2.5-4.5"/><path d="M7 7c0-1.7 1.3-2.5 2.5-2.5S12 5.3 12 7"/></symbol>
+    <symbol id="hojas" viewBox="0 0 120 260"><g fill="none" stroke="#9C8566" stroke-width="1.4" stroke-linecap="round"><path d="M70 255 C 66 190, 74 120, 92 10"/></g>
+      <g fill="#CBB79A" fill-opacity=".55" stroke="#8E7759" stroke-width="1" stroke-linejoin="round">
+      <path d="M72 220c-18-6-32-2-42 8 16 4 30 1 42-8Z"/><path d="M73 190c16-10 30-10 40-2-14 8-28 9-40 2Z"/><path d="M75 160c-20-4-34 2-42 14 17 1 31-4 42-14Z"/><path d="M78 130c15-12 29-14 39-7-13 10-27 13-39 7Z"/><path d="M81 100c-19-3-31 4-38 16 16 0 29-6 38-16Z"/><path d="M85 70c13-12 26-15 35-9-11 10-24 14-35 9Z"/><path d="M88 42c-16-1-26 6-31 17 14-1 25-7 31-17Z"/></g></symbol>
+    <symbol id="nube-borde" viewBox="0 0 200 170"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M30 168H170A28 28 0 0 0 198 140V100A40 40 0 0 0 150 58A52 52 0 0 0 50 58A40 40 0 0 0 2 100V140A28 28 0 0 0 30 168Z"/></symbol>
+  </defs>
+</svg>
+
+<script src="js/datos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
